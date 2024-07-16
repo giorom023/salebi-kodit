@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Combined Drawing: House and Sun</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+      }
+      canvas {
+        margin: 20px;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="combinedCanvas" width="900" height="500"></canvas>
+
+    <script>
+      const combinedCanvas = document.getElementById("combinedCanvas"); // კანვასის მოპოვება
+      const ctx = combinedCanvas.getContext("2d"); // კონტექსტის მიღება 2D რეალისთვის
+
+      // ღრუბლის ხატვის ფუნქცია
+      function drawCloud(x, y, size) {
+        ctx.fillStyle = "lightblue"; // ღრუბლის ფერი
+        ctx.beginPath(); // ახალი გზა იწყება
+        ctx.arc(x, y, size, 0, 2 * Math.PI); // პირველი სექტის ხატვა
+        ctx.arc(x + 40, y, size * 1.5, 0, 2 * Math.PI); // მეორე სექტის ხატვა
+        ctx.arc(x + 20, y - 30, size, 0, 2 * Math.PI); // მესამე სექტის ხატვა
+        ctx.fill(); // მავნე ფორმის დაფარვა
+        ctx.beginPath(); // ახალი გზა იწყება
+        ctx.arc(x + 120, y - 20, size * 2, 0, 2 * Math.PI); // მეოთხე სექტის ხატვა
+        ctx.fillStyle = "lightblue"; // ღრუბლის ფერი
+        ctx.fill(); // მავნე ფორმის დაფარვა
+        ctx.strokeStyle = "lightblue"; // ხაზის ფერი
+        ctx.stroke(); // ღრუბლის გარეგანი ზოლი
+      }
+
+      // მზე
+      ctx.save(); // მიმდინარე კონტექსტის შენახვა
+      ctx.translate(200, 150); // ფართობის ტრანსფორმაცია
+      ctx.beginPath(); // ახალი გზა იწყება
+      ctx.arc(0, 0, 40, 0, 2 * Math.PI); // მზის მრგვალი ფორმის ხატვა
+      ctx.fillStyle = "yellow"; // მზის ფერი
+      ctx.fill(); // მავნე ფორმის დაფარვა
+      ctx.lineWidth = 2; // ხაზის სისქე
+      ctx.strokeStyle = "orange"; // ხაზის ფერი
+      ctx.stroke(); // მზის გარეგანი ზოლი
+      ctx.restore(); // კონტექსტის აღდგენა
+
+      // მზის სხივების ხატვა
+      const rays = [
+        { x1: 200, y1: 50, x2: 200, y2: -10 },
+        { x1: 270, y1: 80, x2: 300, y2: 50 },
+        { x1: 300, y1: 150, x2: 370, y2: 150 },
+        { x1: 270, y1: 220, x2: 330, y2: 280 },
+        { x1: 200, y1: 250, x2: 200, y2: 310 },
+        { x1: 130, y1: 220, x2: 70, y2: 280 },
+        { x1: 100, y1: 150, x2: 30, y2: 150 },
+        { x1: 130, y1: 80, x2: 100, y2: 50 },
+      ];
+
+      rays.forEach((ray) => {
+        // სხივების გავლა
+        ctx.beginPath();
+        ctx.moveTo(ray.x1, ray.y1); // ხაზის დასაწყისი
+        ctx.lineTo(ray.x2, ray.y2); // ხაზის დასრულება
+        ctx.strokeStyle = "orange"; // ხაზის ფერი
+        ctx.lineWidth = 2; // ხაზის სისქე
+        ctx.stroke(); // ხაზის ხატვა
+      });
+
+      // ღრუბლების ხატვა კუთხეებში
+      drawCloud(50, 80, 40); // ზედა მარცხენა კუთხე
+      drawCloud(800, 80, 40); // ზედა მარჯვენა კუთხე (მოწვდილი)
+
+      // სახლის ხატვის ფუნქცია
+      function drawHouse(x, y, roofColor, wallColor) {
+        ctx.save(); // მიმდინარე კონტექსტის შენახვა
+        ctx.translate(x, y); // ფართობის ტრანსფორმაცია
+
+        // კედლების ხატვა
+        ctx.fillStyle = wallColor; // კედლის ფერი
+        ctx.fillRect(0, 0, 200, 200); // კედლის ფორმის ხატვა
+
+        // ბუხრის ხატვა
+        ctx.fillStyle = "brown"; // ბუხრის ფერი
+        ctx.fillRect(160, -70, 20, 50); // ბუხრის ფორმის ხატვა
+
+        // სახურავის ხატვა
+        ctx.beginPath();
+        ctx.moveTo(0, 0); // სახურავის დასაწყისი
+        ctx.lineTo(100, -100); // სახურავის მეორე წერტილი
+        ctx.lineTo(200, 0); // სახურავის დასრულება
+        ctx.closePath();
+        ctx.fillStyle = roofColor; // სახურავის ფერი
+        ctx.fill(); // სახურავის დაფარვა
+
+        // კარის ხატვა
+        ctx.fillStyle = "darkgray"; // კარის ფერი
+        ctx.fillRect(75, 100, 50, 100); // კარის ფორმის ხატვა
+
+        // კარის სახელურების ხატვა
+        ctx.beginPath();    
+        ctx.arc(90, 150, 5, 0, 2 * Math.PI); // სახელურის ხატვა
+        ctx.fillStyle = "black"; // სახელურის ფერი
+        ctx.fill(); // სახელურის დაფარვა
+
+        // ფანჯრების ხატვა
+        const windows = [
+          { x: 15, y: 50 },
+          { x: 120, y: 50 },
+        ];
+        windows.forEach((win) => {
+          // ყველა ფანჯრის გავლა
+          ctx.fillStyle = "white"; // ფანჯრის ფერი
+          ctx.fillRect(win.x, win.y, 50, 50); // ფანჯრის ფორმის ხატვა
+          ctx.strokeRect(win.x, win.y, 50, 50); // ფანჯრის ხაზის ხატვა
+          ctx.beginPath(); // ახალი გზა იწყება
+          ctx.moveTo(win.x, win.y + 25); // ფანჯრის შუაზე ხაზის დასაწყისი
+          ctx.lineTo(win.x + 50, win.y + 25); // ჰორიზონტალური ხაზის დასრულება
+          ctx.moveTo(win.x + 25, win.y); // ვერტიკალური ხაზის დასაწყისი
+          ctx.lineTo(win.x + 25, win.y + 50); // ვერტიკალური ხაზის დასრულება
+          ctx.stroke(); // ხაზის ხატვა
+        });
+
+        ctx.restore(); // კონტექსტის აღდგენა
+      }
+
+      // სახლების ხატვა
+      const housePositions = [
+        { x: 50, y: 300, roofColor: "purple", wallColor: "lightgreen" },
+        { x: 350, y: 300, roofColor: "red", wallColor: "gray" },
+        { x: 650, y: 300, roofColor: "darkblue", wallColor: "lightblue" },
+      ];
+
+      housePositions.forEach((house) => {
+        drawHouse(house.x, house.y, house.roofColor, house.wallColor); // სახლის ხატვა
+      });
+    </script>
+  </body>
+</html>
